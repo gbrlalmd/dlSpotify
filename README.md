@@ -1,5 +1,5 @@
 # spotify-downloader
-Downloads Spotify playlists using youtube-dl
+Downloads Spotify albums and playlists using youtube-dl
 
 ## Pre-requisites
 Python 3 and [FFMpeg](https://ffmpeg.org/download.html).
@@ -14,7 +14,8 @@ Run the script
 ```
 python main.py
 ```
+Choose the option between 1 and 2.(3 not implemented yet xd)
 
-Insert the Spotify Playlist URL or URI (you can get these by right-clicking the playlist then "Share > Copy Playlist Link/Copy Spotify URI") and press enter.
+Insert the Spotify URL or URI for the Playlist/Album (you can get these by right-clicking the playlist then "Share > Copy Playlist Link/Copy Spotify URI") and press enter.
 
-After finish, the songs will be on a new folder with the playlist name at the parent directory.
+After finish, the songs will be on a new folder with the playlist or album name at the parent directory.
