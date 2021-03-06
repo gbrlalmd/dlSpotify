@@ -22,3 +22,4 @@ while True:
         break
     else:
         print('Invalid command! Try again.')
+input('Press ENTER to exit.')
