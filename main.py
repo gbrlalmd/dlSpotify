@@ -14,34 +14,36 @@ def cls():
       _ = os.system('cls')
 
 cls()
+try:
+    puri = input('Enter the Spotify Playlist URL or URI: ')
+    playlistname = sp.playlist(puri)['name']
+    tracks = sp.playlist_items(puri)['items']
+    count = 0
+    cdir = os.getcwd()
+    fdir = os.path.join(cdir, r'{}'.format(playlistname))
+    if not os.path.exists(fdir):
+        os.makedirs(fdir)
+    YDL_OPTIONS = {
+        'format': 'bestaudio/best',
+        'outtmpl': '{}/%(title)s.%(ext)s'.format(fdir),
+        'quiet': True,
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+        }
 
-puri = input('Enter the Spotify Playlist URL or URI: ')
-playlistname = sp.playlist(puri)['name']
-tracks = sp.playlist_items(puri)['items']
-count = 0
-cdir = os.getcwd()
-fdir = os.path.join(cdir, r'{}'.format(playlistname))
-if not os.path.exists(fdir):
-    os.makedirs(fdir)
-YDL_OPTIONS = {
-    'format': 'bestaudio/best',
-    'outtmpl': '{}/%(title)s.%(ext)s'.format(fdir),
-    'quiet': True,
-    'postprocessors': [{
-        'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        'preferredquality': '192',
-    }],
-    }
-
-for n in tracks:
-    count+=1
-    artist = n['track']['artists'][0]['name']
-    track = n['track']['name']
-    search = '{0} - {1} audio'.format(artist,track)
-    print('Downloading {0} - {1}'.format(artist,track))
-    with YoutubeDL(YDL_OPTIONS) as ydl:
-        video = ydl.extract_info(f'ytsearch:{search}', download=True)['entries'][0]
-    print('Download complete!')
-cls()
-print('{0} tracks downloaded from playlist "{1}"!'.format(count,playlistname))
+    for n in tracks:
+        count+=1
+        artist = n['track']['artists'][0]['name']
+        track = n['track']['name']
+        search = '{0} - {1} audio'.format(artist,track)
+        print('Downloading {0} - {1}'.format(artist,track))
+        with YoutubeDL(YDL_OPTIONS) as ydl:
+            video = ydl.extract_info(f'ytsearch:{search}', download=True)['entries'][0]
+        print('Download complete!')
+    cls()
+    print('{0} tracks downloaded from playlist "{1}"!'.format(count,playlistname))
+except:
+    print("Playlist not found. Check your URL/URI and if the playlist is set as Public.")
