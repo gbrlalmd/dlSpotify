@@ -17,7 +17,13 @@ YDL_OPTIONS = {
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
         'preferredquality': '192',
-    }],
+        }],
+}
+
+MP4_OPTIONS = {
+    'format': '137+140',
+    'outtmpl': '',
+    'quiet': True,
 }
 
 def cls():
@@ -27,13 +33,19 @@ def cls():
       _ = os.system('cls')
 
 def dl(artist, track, fdir, req, tn):
-    if req==1:
-        YDL_OPTIONS['outtmpl'] = '{0}/{1} - {2}.%(ext)s'.format(fdir,artist,track)
-    elif req==2:
-        YDL_OPTIONS['outtmpl'] = '{0}/{1}. {2}.%(ext)s'.format(fdir,str(tn).zfill(2),track)
-    query = '{0} - {1} audio'.format(artist,track)
-    with YoutubeDL(YDL_OPTIONS) as ydl:
-        ydl.extract_info(f'ytsearch:{query}', download=True)['entries'][0]
+    if req==3:
+        MP4_OPTIONS['outtmpl'] = '{0}/{1} - {2}.%(ext)s'.format(fdir,artist,track)
+        query = '{0} - {1} video'.format(artist, track)
+        with YoutubeDL(MP4_OPTIONS) as ydl:
+            ydl.extract_info(f'ytsearch:{query}', download=True)['entries'][0]
+    else:
+        if req==1:
+            YDL_OPTIONS['outtmpl'] = '{0}/{1} - {2}.%(ext)s'.format(fdir,artist,track)
+        elif req==2:
+            YDL_OPTIONS['outtmpl'] = '{0}/{1}. {2}.%(ext)s'.format(fdir,str(tn).zfill(2),track)
+        query = '{0} - {1} audio'.format(artist,track)
+        with YoutubeDL(YDL_OPTIONS) as ydl:
+            ydl.extract_info(f'ytsearch:{query}', download=True)['entries'][0]
 
 def batchdl(tracks, fdir, req):
     failedtracks = []
@@ -126,4 +138,32 @@ def ad():
         urllib.request.urlretrieve(cover, '{}/folder.jpg'.format(fdir))
         print('{0} of {1} tracks from "{2} - {3}" downloaded!'.format(count,tcount,albumartist,albumname))
         if fail>0:
+            retry(failedtracks, fail, fdir)
+
+def mvd():
+    cls()
+    print('NOTE: Songs without Music Video may download the first video found by Youtube (being this from an unofficial video or even some random cover)')
+    puri = input('Enter the Spotify Playlist URL or URI: ')
+    exists = False
+    try:
+        sp.playlist(puri)
+        exists = True
+    except:
+        print('Playlist does not exist.')
+    if exists:
+        playlistname = sp.playlist(puri)['name']
+        tracks = sp.playlist_items(puri)['items']
+        tracklist = []
+        cdir = os.getcwd()
+        fdir = os.path.join(cdir, r'{}'.format(playlistname))
+        if not os.path.exists(fdir):
+            os.makedirs(fdir)
+        for n in tracks:
+            artist = n['track']['artists'][0]['name']
+            track = n['track']['name']
+            search = '{0}!@!{1}'.format(artist, track)
+            tracklist.append(search)
+        count, fail, failedtracks = batchdl(tracklist,fdir, 3)
+        print('{0} videos downloaded from playlist "{1}"!'.format(count, playlistname))
+        if fail > 0:
             retry(failedtracks, fail, fdir)

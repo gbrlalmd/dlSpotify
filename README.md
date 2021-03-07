@@ -17,7 +17,7 @@ python main.py
 
 OR you can try the [Release](https://github.com/gbrlalmd/dlSpotify/releases/) (FFMpeg already included) version.
 
-Choose the option between 1 and 2.(3 not implemented yet xd)
+Choose the option you want.
 
 Insert the Spotify URL or URI for the Playlist/Album (you can get these by right-clicking the playlist then "Share > Copy Playlist Link/Copy Spotify URI") and press enter.
 

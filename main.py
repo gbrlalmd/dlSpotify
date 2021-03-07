@@ -1,4 +1,4 @@
-from downloader import pd, ad
+from downloader import pd, ad, mvd
 import os
 
 def cls():
@@ -9,8 +9,8 @@ def cls():
 
 cls()
 while True:
-    print('Spotify Downloader by gbrlalmd')
-    opt = input('1 - Playlist Downloader\n2 - Album Downloader\n3 - Single Track Downloader\n')
+    print('dlSpotify by gbrlalmd')
+    opt = input('1 - Playlist Downloader\n2 - Album Downloader\n3 - Music Video Downloader (EXPERIMENTAL)\n')
     if opt == '1':
         pd()
         break
@@ -18,7 +18,7 @@ while True:
         ad()
         break
     elif opt == '3':
-        print('Not implemented yet :(')
+        mvd()
         break
     else:
         print('Invalid command! Try again.')
